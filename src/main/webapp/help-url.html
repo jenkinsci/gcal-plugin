@@ -1,0 +1,16 @@
+<div>
+  <p>
+    The URL needed here is the private XML address.<br />
+    To get this URL, <a href="http://www.google.com/calendar" target="_blank">log</a> on to your google calendar, go to
+    settings, select the calendar tab and click on the calendar you wish to use for your hudson job. Then click the
+    XML button at the bottom of the page in the 'private' section. It should pop up a window with the address.<br />
+    The address generated will contain a 'magic cookie' number that you'll want to strip out.<br/>
+    The url will look like:<br/>
+    http://www.google.com/calendar/feeds/user%40gmail.com/private-9c22dffd59eaf9e5964e066f7ffff8f4/basic<br/>
+    and you will need to make it look like :<br/>
+    http://www.google.com/calendar/feeds/user%40gmail.com/private/full<br/>
+    To do so:<br/>
+    1. strip out the 'magic cookie' number after /private-<br />
+    2. replace /basic with /full<br />
+  </p>
+</div>

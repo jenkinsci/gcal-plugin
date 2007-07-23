@@ -1,0 +1,26 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:entry title="Calendar URL" help="${rootURL}/plugin/gcal/help-url.html">
+    <f:textbox name="gcal.url"      value="${instance.url}" />
+  </f:entry>
+  <f:entry title="Login">
+    <f:textbox name="gcal.login" id="gcal.login"   value="${instance.login}" />
+  </f:entry>
+  <f:entry title="Password">
+    <f:textbox name="gcal.password" id="gcal.password" value="${instance.password}" />
+  </f:entry>
+  <f:entry title="Which builds to publish?">
+    <f:radio name="gcal.statusToPublish" value="All"     checked="${instance.statusToPublish=='All'}"/>
+    <label>All buils</label>
+    <f:radio name="gcal.statusToPublish" value="Successes" checked="${instance.statusToPublish=='Successes'}"/>
+    <label>Only successful builds</label>
+    <f:radio name="gcal.statusToPublish" value="Failures" checked="${instance.statusToPublish=='Failures'}"/>
+    <label>Only failing builds</label>
+  </f:entry>
+  <!--
+  <f:entry title="Get Calendars">
+    <input name="gcal.get" value="Fetch calendars" type="button"
+           />
+  </f:entry>
+  -->
+
+</j:jelly>

@@ -1,0 +1,35 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jvnet.hudson.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <artifactId>gcal</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>hpi</packaging>
+  <name>Hudson Google Calendar plugin</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.jvnet.hudson.plugins.gcal</groupId>
+      <artifactId>gdata-calendar</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.hudson.plugins.gcal</groupId>
+      <artifactId>gdata-client</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>gcal-libs</id>
+      <url>file:${project.basedir}/lib</url>
+      <layout>legacy</layout>
+    </repository>
+  </repositories>
+</project>
