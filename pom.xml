@@ -8,7 +8,7 @@
   </parent>
   
   <artifactId>gcal</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <packaging>hpi</packaging>
   <name>Hudson Google Calendar plugin</name>
   
@@ -32,8 +32,4 @@
       <layout>legacy</layout>
     </repository>
   </repositories>
-
-  <scm>
-    <tag>gcal-0_1</tag>
-  </scm>
 </project>
