@@ -8,7 +8,7 @@
   </parent>
   
   <artifactId>gcal</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <packaging>hpi</packaging>
   <name>Hudson Google Calendar plugin</name>
   <url>http://hudson.gotdns.com/wiki/display/HUDSON/Google+Calendar+Plugin</url>
@@ -33,4 +33,10 @@
       <layout>legacy</layout>
     </repository>
   </repositories>
+
+  <scm>
+    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/gcal-0.2</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/gcal-0.2</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/hudson/plugins/gcal/tags/gcal-0.2</url>
+  </scm>
 </project>
