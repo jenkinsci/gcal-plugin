@@ -6,7 +6,7 @@
     <f:textbox name="gcal.login" id="gcal.login"   value="${instance.login}" />
   </f:entry>
   <f:entry title="Password">
-    <f:textbox name="gcal.password" id="gcal.password" value="${instance.password}" />
+    <f:password name="gcal.password" id="gcal.password" value="${instance.password}" />
   </f:entry>
   <f:entry title="Which builds to publish?">
     <f:radio name="gcal.statusToPublish" value="All"     checked="${instance.statusToPublish=='All'}"/>
