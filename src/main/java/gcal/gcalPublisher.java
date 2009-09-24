@@ -15,10 +15,15 @@
  */
 package gcal;
 
+import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.*;
+import hudson.tasks.BuildStepDescriptor;
+import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
+import hudson.tasks.Recorder;
 import hudson.tasks.Mailer;
+import net.sf.json.JSONObject;
 import org.kohsuke.stapler.StaplerRequest;
 
 import com.google.gdata.client.calendar.*;
@@ -35,7 +40,7 @@ import java.io.IOException;
  *  This is a really simple publisher for google calendar
  * @author Arnaud Lacour
  */
-public class gcalPublisher extends Publisher {
+public class gcalPublisher extends Recorder {
 
   String serviceURL = "http://www.google.com/calendar/";
 
@@ -71,7 +76,8 @@ public class gcalPublisher extends Publisher {
     this.statusToPublish = statusToPublish==null?"All":statusToPublish;
   }
 
-  public boolean perform(Build build, Launcher launcher, BuildListener listener) {
+  @Override
+  public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener) {
     /*
     listener.getLogger().println("GCal: build duration    : "+build.getDurationString());
     listener.getLogger().println("GCal: build number      : "+build.getNumber());
@@ -96,7 +102,7 @@ public class gcalPublisher extends Publisher {
         CalendarEventEntry myEntry = new CalendarEventEntry();
 
         myEntry.setTitle(new PlainTextConstruct(build.getParent().getDisplayName()+" build "+build.getDisplayName()+" "+(build.getResult()==Result.FAILURE?"failed":"succeeded")));
-        myEntry.setContent(new PlainTextConstruct("Check the status for build "+build.getDisplayName()+" here "+ Mailer.DESCRIPTOR.getUrl() + build.getUrl()));
+        myEntry.setContent(new PlainTextConstruct("Check the status for build "+build.getDisplayName()+" here "+ Mailer.descriptor().getUrl() + build.getUrl()));
         DateTime startTime = DateTime.parseDateTime(build.getTimestampString2());
         DateTime endTime = DateTime.now();
         When eventTimes = new When();
@@ -127,12 +133,18 @@ public class gcalPublisher extends Publisher {
     return true;
   }
 
-  public Descriptor<Publisher> getDescriptor() {
+  public BuildStepMonitor getRequiredMonitorService() {
+    return BuildStepMonitor.BUILD;
+  }
+
+  @Override
+  public BuildStepDescriptor<Publisher> getDescriptor() {
     return DESCRIPTOR;
   }
 
+  @Extension
   public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
-  public static final class DescriptorImpl extends Descriptor<Publisher> {
+  public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
     DescriptorImpl() {
       super(gcalPublisher.class);
     }
@@ -140,11 +152,17 @@ public class gcalPublisher extends Publisher {
     public String getDisplayName() {
       return "Publish job status to Google Calendar";
     }
+    @Override
     public String getHelpFile() {
       return "/plugin/gcal/help-projectConfig.html";
     }
-    public gcalPublisher newInstance(StaplerRequest req) throws FormException {
+    @Override
+    public gcalPublisher newInstance(StaplerRequest req, JSONObject formData) throws FormException {
       return new gcalPublisher(req.getParameter("gcal.url"),req.getParameter("gcal.login"),req.getParameter("gcal.password"),req.getParameter("gcal.statusToPublish"));
+    }
+    @Override
+    public boolean isApplicable(Class<? extends AbstractProject> jobType) {
+      return true;
     }
   }
 }
