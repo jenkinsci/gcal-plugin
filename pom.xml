@@ -12,7 +12,13 @@
   <packaging>hpi</packaging>
   <name>Hudson Google Calendar plugin</name>
   <url>http://wiki.hudson-ci.org/display/HUDSON/Google+Calendar+Plugin</url>
-  
+
+  <developers>
+    <developer>
+      <name>Arnaud Lacour</name>  
+    </developer>
+  </developers>
+
   <dependencies>
     <dependency>
       <groupId>org.jvnet.hudson.plugins.gcal</groupId>
