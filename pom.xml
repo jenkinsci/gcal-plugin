@@ -12,7 +12,7 @@
   </parent>
 
   <artifactId>gcal</artifactId>
-  <version>0.4</version>
+  <version>0.5-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Google Calendar plugin</name>
