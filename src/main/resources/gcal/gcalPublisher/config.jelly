@@ -10,7 +10,7 @@
   </f:entry>
   <f:entry title="Which builds to publish?">
     <f:radio name="gcal.statusToPublish" value="All"     checked="${instance.statusToPublish=='All'}"/>
-    <label>All buils</label>
+    <label>All builds</label>
     <f:radio name="gcal.statusToPublish" value="Successes" checked="${instance.statusToPublish=='Successes'}"/>
     <label>Only successful builds</label>
     <f:radio name="gcal.statusToPublish" value="Failures" checked="${instance.statusToPublish=='Failures'}"/>
