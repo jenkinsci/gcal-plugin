@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jvnet.hudson.plugins</groupId>
+    <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.392</version>
-    <relativePath>../pom.xml</relativePath>
+    <version>1.447</version>
+    <!--<relativePath>../pom.xml</relativePath>-->
   </parent>
 
   <artifactId>gcal</artifactId>
