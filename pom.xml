@@ -117,7 +117,7 @@
   </properties>
 
   <dependencies>
-    <dependency>
+    <!--<dependency>
       <groupId>org.jvnet.hudson.plugins.gcal</groupId>
       <artifactId>gdata-calendar</artifactId>
       <version>1.0</version>
@@ -126,6 +126,11 @@
       <groupId>org.jvnet.hudson.plugins.gcal</groupId>
       <artifactId>gdata-client</artifactId>
       <version>1.0</version>
+    </dependency> -->
+    <dependency>
+      <groupId>com.google.gdata</groupId>
+      <artifactId>core</artifactId>
+      <version>1.47.1</version>
     </dependency>
   </dependencies>
 
