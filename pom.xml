@@ -40,10 +40,10 @@
       <id>repo.jenkins-ci.org</id>
       <url>http://repo.jenkins-ci.org/public/</url>
     </repository>
-    <repository>
+   <!-- <repository>
       <id>local</id>
       <url>file:${project.basedir}/lib</url>
-    </repository>
+    </repository>-->
   </repositories>
 
   <pluginRepositories>

@@ -28,6 +28,7 @@ import hudson.tasks.Mailer;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.StaplerRequest;
 
+import com.google.gdata.client.*;
 import com.google.gdata.client.calendar.*;
 import com.google.gdata.data.*;
 import com.google.gdata.data.calendar.*;
