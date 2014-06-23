@@ -141,7 +141,7 @@ public class gcalPublisher extends Recorder {
       } catch (AuthenticationException e) {
         e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         listener.error("GCal: Could not authenticate user ["+login+"] to calendar ["+url+"]");
-        build.setResult( Result.FAILURE );
+        //build.setResult( Result.FAILURE );
       } catch (MalformedURLException e) {
         listener.error("GCal: The provided calendar URL ["+url+"] is not valid");
         e.printStackTrace();
