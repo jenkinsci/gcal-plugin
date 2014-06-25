@@ -16,6 +16,9 @@
     <f:radio name="gcal.statusToPublish" value="Failures" checked="${instance.statusToPublish=='Failures'}"/>
     <label>Only failing builds</label>
   </f:entry>
+  <f:entry title="Body" help="${rootURL}/plugin/gcal/Body-Description.html" >
+    <f:textarea name="gcal.body" id="gcal.body" value="${instance.body}" />
+  </f:entry>
   <!--
   <f:entry title="Get Calendars">
     <input name="gcal.get" value="Fetch calendars" type="button"

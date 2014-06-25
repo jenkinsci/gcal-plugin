@@ -14,7 +14,9 @@
    limitations under the License.
  */
 package gcal;
-
+import hudson.EnvVars;
+import hudson.Util;
+import org.apache.commons.lang.StringUtils;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.*;
@@ -26,6 +28,7 @@ import hudson.tasks.Mailer;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.StaplerRequest;
 
+import com.google.gdata.client.*;
 import com.google.gdata.client.calendar.*;
 import com.google.gdata.data.*;
 import com.google.gdata.data.calendar.*;
@@ -66,20 +69,43 @@ public class gcalPublisher extends Recorder {
   public String getStatusToPublish(){
     return statusToPublish;
   }
+  private final String body;
+  public String getBody(){
+    return body;
+  }
 
-  gcalPublisher(String url, String login, String password, String statusToPublish) {
+  gcalPublisher(String url, String login, String password, String statusToPublish, String body) {
     int startPoint       = url.indexOf("/feeds/")+7;
     this.calendarID      = url.substring(startPoint,url.indexOf("/",startPoint+1));
     this.url             = serviceURL+"feeds/"+calendarID+"/private/full";
     this.login           = login;
     this.password        = password;
     this.statusToPublish = statusToPublish==null?"All":statusToPublish;
+    this.body            = body;
+  }
+
+  //Converts the variables in the string with their values
+  public static String getParameterString(String original, AbstractBuild<?,?> r, BuildListener li){
+    ParametersAction parameters = r.getAction(ParametersAction.class);
+    BuildListener listener = li;
+    //Attempts to convert all of the envrionment variables.
+    try{
+      EnvVars envVars = new EnvVars(r.getEnvironment(li));
+      original = envVars.expand(original);
+    } catch(Exception e){
+      listener.getLogger().println("Could not find environment variables\n" );
+    }
+    //If the build has parameters it replaces the variables with their values. 
+    if(parameters != null){
+      original = parameters.substitute(r,original);
+    }
+    return original;
   }
 
   @Override
   public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener) {
-    /*
-    listener.getLogger().println("GCal: build duration    : "+build.getDurationString());
+    
+    /*listener.getLogger().println("GCal: build duration    : "+build.getDurationString());
     listener.getLogger().println("GCal: build number      : "+build.getNumber());
     listener.getLogger().println("GCal: build timestamp 1 : "+build.getTimestampString() );
     listener.getLogger().println("GCal: build timestamp 2 : "+build.getTimestampString2() );
@@ -87,8 +113,8 @@ public class gcalPublisher extends Recorder {
     listener.getLogger().println("GCal: build status url  : "+build.getBuildStatusUrl() );
     listener.getLogger().println("GCal: build display name: "+build.getDisplayName() );
     listener.getLogger().println("GCal: job display name  : "+build.getParent().getDisplayName());
-    listener.getLogger().println("GCal: mailer base url   : "+Mailer.DESCRIPTOR.getUrl());
-    */
+    listener.getLogger().println("GCal: mailer base url   : "+Mailer.DESCRIPTOR.getUrl());*/
+    
     if ( statusToPublish.equals("All") ||
         (statusToPublish.equals("Successes") && build.getResult()==Result.SUCCESS ) ||
         (statusToPublish.equals("Failures") && build.getResult()==Result.FAILURE )
@@ -100,9 +126,8 @@ public class gcalPublisher extends Recorder {
         myService.setUserCredentials(login, password);
         URL postUrl = new URL(url);
         CalendarEventEntry myEntry = new CalendarEventEntry();
-
         myEntry.setTitle(new PlainTextConstruct(build.getParent().getDisplayName()+" build "+build.getDisplayName()+" "+(build.getResult()==Result.FAILURE?"failed":"succeeded")));
-        myEntry.setContent(new PlainTextConstruct("Check the status for build "+build.getDisplayName()+" here "+ Mailer.descriptor().getUrl() + build.getUrl()));
+        myEntry.setContent(new PlainTextConstruct("Check the status for build "+build.getDisplayName()+" here "+ Mailer.descriptor().getUrl() + build.getUrl() + "\n" + getParameterString(getBody(),build, listener)));
         DateTime startTime = DateTime.parseDateTime(build.getTimestampString2());
         DateTime endTime = DateTime.now();
         When eventTimes = new When();
@@ -117,7 +142,7 @@ public class gcalPublisher extends Recorder {
       } catch (AuthenticationException e) {
         e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         listener.error("GCal: Could not authenticate user ["+login+"] to calendar ["+url+"]");
-        build.setResult( Result.FAILURE );
+        //build.setResult( Result.FAILURE );
       } catch (MalformedURLException e) {
         listener.error("GCal: The provided calendar URL ["+url+"] is not valid");
         e.printStackTrace();
@@ -158,7 +183,7 @@ public class gcalPublisher extends Recorder {
     }
     @Override
     public gcalPublisher newInstance(StaplerRequest req, JSONObject formData) throws FormException {
-      return new gcalPublisher(req.getParameter("gcal.url"),req.getParameter("gcal.login"),req.getParameter("gcal.password"),req.getParameter("gcal.statusToPublish"));
+      return new gcalPublisher(req.getParameter("gcal.url"),req.getParameter("gcal.login"),req.getParameter("gcal.password"),req.getParameter("gcal.statusToPublish"),req.getParameter("gcal.body"));
     }
     @Override
     public boolean isApplicable(Class<? extends AbstractProject> jobType) {
