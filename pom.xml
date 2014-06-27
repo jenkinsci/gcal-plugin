@@ -12,7 +12,7 @@
   </parent>
 
   <artifactId>gcal</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
   <packaging>hpi</packaging>
 
   <name>Google Calendar plugin</name>
@@ -26,6 +26,11 @@
       <id>jieryn</id>
       <name>Jesse Farinacci</name>
       <email>jieryn@gmail.com</email>
+    </developer>
+    <developer>
+      <id>toneill818</id>
+      <name>Thomas O'Neill</name>
+      <email>toneill818@gmail.com</email>
     </developer>
   </developers>
 
